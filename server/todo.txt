@@ -1,0 +1,8 @@
+Server:
+
+- Remove Magic variables
+- Add configuration
+
+Agent:
+
+
