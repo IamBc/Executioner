@@ -8,7 +8,6 @@ import (
 type Controller struct {
 }
 
-// TODO replace job status magic variables
 func (c *Controller) AddJob(newJob Job) error {
 	// Checks
 	if newJob.RetryCount < 0 {

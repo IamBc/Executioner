@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"os"
 )
 
-// TODO Configuration
 func StartAgentAPI() {
 	log.Println("Starting Agent API...")
 	router := mux.NewRouter().StrictSlash(false)
@@ -17,7 +17,7 @@ func StartAgentAPI() {
 	router.HandleFunc("/SetJobStatus/", agentHandler.SetJobStatus)
 	srv := &http.Server{
 		Handler:      router,
-		Addr:         ":8081",
+		Addr:         ":" + os.Getenv("AgentAPI"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
@@ -28,7 +28,6 @@ func StartAgentAPI() {
 type AgentHandler struct {
 }
 
-// TODO send agent ID, so the server knows what type of Requests the server can take
 // TODO what to do with empty response
 func (m *AgentHandler) GetJob(w http.ResponseWriter, r *http.Request) {
 	var c Controller
@@ -51,4 +50,3 @@ func (m *AgentHandler) SetJobStatus(w http.ResponseWriter, r *http.Request) {
 	c.UpdateJob(job)
 }
 
-// TODO get job from buff utility function

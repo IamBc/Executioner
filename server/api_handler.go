@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"os"
 )
 
 func StartEndUserAPI() {
@@ -17,10 +18,9 @@ func StartEndUserAPI() {
 	router := mux.NewRouter().StrictSlash(false)
 	router.HandleFunc("/AddJob/", apiHandler.AddJob)
 	router.HandleFunc("/GetJobInfo/", apiHandler.GetJobInfo)
-	// TODO addr, timeouts should be in config
 	srv := &http.Server{
 		Handler:      router,
-		Addr:         ":8080",
+		Addr:         ":" + os.Getenv("UserAPI"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
