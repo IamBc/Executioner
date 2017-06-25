@@ -8,10 +8,8 @@ import (
 	"net/http"
 	"os/exec"
 	"time"
+	"os"
 )
-
-// TODO Config
-// TODO abstract everything with interfaces
 
 type Job struct {
 	JobID           int
@@ -58,13 +56,12 @@ func main() {
 
 		log.Println("STDOUT: " + stdout + "\nSTDERR: " + stderr)
 
-		// TODO Update Job
 		SetJobStatus(job)
 	}
 }
 
 func GetJob() (job Job, err error) {
-	resp, err := http.Get("http://localhost:8081/GetJob/")
+	resp, err := http.Get( os.Getenv("ServerEndpoint") + "/GetJob/")
 	if err != nil {
 		return job, err
 	}
@@ -103,11 +100,10 @@ func ExecCommand(cmd_str string) (cmd_stdout string, cmd_stderr string, err erro
 	return cmd_stdout, cmd_stderr, nil
 }
 
-//TODO return only error
 func SetJobStatus(job Job) error {
 	buf := new(bytes.Buffer)
 	json.NewEncoder(buf).Encode(job)
-	resp, err := http.Post("http://localhost:8081/SetJobStatus/", "text/json", buf)
+	resp, err := http.Post( os.Getenv("ServerEndpoint") + "/SetJobStatus/", "text/json", buf )
 
 	if err != nil {
 		return err
