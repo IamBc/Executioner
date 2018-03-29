@@ -53,6 +53,7 @@ func main() {
 		} else {
 			job.Status = "finished"
 		}
+		job.OutputsSTDOUT = stdout
 
 		log.Println("STDOUT: " + stdout + "\nSTDERR: " + stderr)
 

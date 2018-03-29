@@ -13,7 +13,7 @@ func (c *Controller) AddJob(newJob Job) error {
 	if newJob.RetryCount < 0 {
 		return errors.New("Negative Retry Count")
 	}
-	if newJob.JobID < 0 {
+	if newJob.JobID <= 0 {
 		return errors.New("Negative ID")
 	}
 

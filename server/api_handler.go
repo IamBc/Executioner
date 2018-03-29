@@ -38,6 +38,7 @@ func (m *ApiHandler) AddJob(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&newJob)
 	if err != nil {
 		log.Println("Decoding Error: " + err.Error())
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Wrong or missing parameters!"))
 	}
 	defer r.Body.Close()
@@ -46,6 +47,7 @@ func (m *ApiHandler) AddJob(w http.ResponseWriter, r *http.Request) {
 	err = c.AddJob(newJob)
 	if err != nil {
 		log.Println(err.Error())
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(err.Error()))
 	}
 }
