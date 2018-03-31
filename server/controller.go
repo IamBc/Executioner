@@ -132,3 +132,22 @@ func (c *Controller) UpdateJob(updatedJob Job) error {
 	log.Println( "Succesfully updated Job with ID: " + updatedJob.JobID )
 	return nil
 }
+
+func initiateDB () {
+	db, err := bolt.Open("my.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucketIfNotExists([]byte("jobs"))
+		if err != nil {
+			log.Println("could not create jobs bucket")
+			return err
+		}
+
+		return err
+	})
+
+	db.Close()
+}

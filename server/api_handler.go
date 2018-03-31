@@ -68,6 +68,6 @@ func (m *ApiHandler) GetJobInfo(w http.ResponseWriter, r *http.Request) {
 
 	// TODO func
 	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(jobs)
+	json.NewEncoder(b).Encode(job)
 	w.Write(b.Bytes())
 }
