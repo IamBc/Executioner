@@ -12,7 +12,7 @@ import (
 )
 
 type Job struct {
-	JobID           int
+	JobID           string
 	Prioritiy       int
 	OwnerHash       string
 	Cmd             string
@@ -34,7 +34,7 @@ func main() {
 			continue
 		}
 
-		if job.JobID == 0 {
+		if job.JobID == "" {
 			log.Println("There is no current JOB!")
 			time.Sleep(3 * time.Second)
 			continue

@@ -37,7 +37,6 @@ func (m *AgentHandler) GetJob(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *AgentHandler) SetJobStatus(w http.ResponseWriter, r *http.Request) {
-
 	decoder := json.NewDecoder(r.Body)
 	var job Job
 	err := decoder.Decode(&job)

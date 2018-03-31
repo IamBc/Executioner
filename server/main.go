@@ -2,16 +2,14 @@ package main
 
 import (
 	_ "strconv"
+	"log"
+	"github.com/boltdb/bolt"
+	_ "encoding/json"
 )
 
-// TODO abstract everything with interfaces
-
-var jobs []Job
-
 type Job struct {
-	JobID           int
+	JobID           string
 	Prioritiy       int
-	OwnerHash       string //TODO config defaults by ownerHash
 	Cmd             string
 	RetryCount      int
 	RetryIntervalMs int
@@ -21,8 +19,29 @@ type Job struct {
 }
 
 func main() {
-	jobs = make([]Job, 0)
+	db, err := bolt.Open("my.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucketIfNotExists([]byte("jobs"))
+		if err != nil {
+			log.Println("could not create jobs bucket")
+			return err
+		}
+
+		return err
+	})
+
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("jobs"))
+		v := b.Get([]byte("69"))
+		log.Printf("The answer is: " + string( v[:] ))
+		return nil
+	})
+	db.Close()
+
 	go StartEndUserAPI()
 	StartAgentAPI()
 }
